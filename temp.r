@@ -126,4 +126,70 @@ fruit_df %>%
 
 # replacement with a pattern
 str_replace(my_fruit, pattern = "fruit", replacement = "THINGY")
+# replacing NA
+melons <- str_subset(fruit, pattern = "melon")
+melons[2] <- NA
+str_replace_na(melons, 'UNKNOWN MELON')
+# tidyr::replace_na()
+tibble(melons) %>%
+  replace_na(replace = list(melons = "Unknown Melon"))
+
+# chapter 3
+# regular expression, aka 'regexes'
+library(gapminder)
+countries <- levels(gapminder$country)
+
+# metacharacter: period .
+# it stands for any single character
+# \n represents a newline
+str_subset(countries, pattern = 'i.a')
+
+# metacharacter: \b and \B
+# \b, indicates a word boundary
+# \B, indicates NOT a word boundary
+str_subset(fruit, pattern = 'melon')
+str_subset(fruit, pattern = '\\bmelon') # gives a word boundary, normally it is a whitespace, then followed by 'melon'
+str_subset(fruit, pattern = '\\Bmelon') # no word boundary, followed by 'melon' directly
+
+# character classes
+# characters can be specified via classes, inside square brakets, []
+# find any countries, ended with 'ia', and the letter before 'ia' is 'n', 'l', or 's'
+str_subset(countries, pattern = '[nls]ia$')
+# find any countries, ended with 'ia', and the preceded letter is not from 'n', 'l', or 's'
+str_subset(countries, pattern = '[^nls]ia$')
+
+# escaping
+# special meaning characters: $ * + . ? [ ] ^ { } | ( ) \
+# prepend two backslashes to escape
+# if only one backslach
+cat("Do you use \"airquotes\" much?")
+cat("before the newline\nafter the newline") # newline
+cat("before the newline\tafter the newline") # a tab
+
+# to find country names contain a period
+str_subset(countries, pattern = '\\.')
+
+# example 2: match an actual square bracket
+(x <- c("whatever", "X is distributed U[0,1]"))
+str_subset(x, pattern = '\\[')
+
+
+# anchors: is to express where the expression must occur within the string
+# hat ^ indicates the beginning of string
+# dollar $ indicates the end
+str_subset(countries, pattern = 'i.a$')
+str_subset(countries, pattern = 'd')
+str_subset(countries, pattern = 'd$')
+
+
+
+
+
+
+
+
+
+
+
+
 
